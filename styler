@@ -1,0 +1,33 @@
+var selected_person;
+
+// load the data
+d3.csv("./data/BROWARD_CLEAN.csv", function(d) {
+  
+  d.age = +d.age;
+  return d;
+
+}, function(error, datafile) {
+  if (error) throw error;
+
+  // put the original data in csv
+  data = datafile;
+  console.log(data);
+
+  // create a random person function
+  randomize = function(data) {
+    var randomPerson = data[Math.floor(Math.random()*data.length)];
+    return randomPerson
+  }
+
+  newPerson = function() {
+    // select a random person
+    selected_person = randomize(data);
+    console.log(selected_person);
+    
+    d3.select('#selected_person')
+      .html(function(d,i) {   
+         return "Age: " + selected_person.age;
+       })
+  }
+
+  });

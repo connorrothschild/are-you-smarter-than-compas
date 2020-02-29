@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+    <meta charset="utf-8">
+    <title>Are You Smarter Than COMPAS? | Connor Rothschild</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+
+    <meta name="twitter:card" content="summary_large_image" >
+    <meta name="twitter:site" content="@CL_Rothschild" >
+    <meta name="twitter:creator" content="@CL_Rothschild" >
+    <meta name="twitter:title" content="Are You Smarter Than a Criminal Justice Algorithm?" >
+    <meta name="twitter:description" content="Probably." >
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/connorrothschild/what-are-you-doing/master/images/thumbnail.jpg" >
+
+    <link rel="icon" href="https://raw.githubusercontent.com/connorrothschild/connorrothschild.github.io/master/me/favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/blocks.css/dist/blocks.min.css" />
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+ <body>
+
+<meta name="author" content="Connor Rothschild"/>
+
+    <h1>
+      <!-- <img src = "images/header.png" width = 600> -->
+      <span style = "font-weight:600">Are You Smarter Than COMPAS?</span>
+      <br><span style="font-size:80%">Probably.</span>
+      <br><span style="font-size:45%">By <a target = "_blank" href = "https://connorrothschild.github.io">Connor Rothschild</a></span>
+      <hr>
+    </h1>
+
+  <h2>
+    <p>COMPAS is a criminal justice algorithm used to... Lorem ipsum dolor sit amet, labore laboramus ut nam, eum et debet populo efficiantur. No ius lorem assum epicurei, no per luptatum mandamus, usu ea vivendum disputando. Pri probo discere qualisque eu, ei summo senserit duo. Ad vim erat ludus facete. Vim te atqui vituperatoribus.</p>
+    <p>In 2016, COMPAS came under national scrutiny when ProPublica... Lorem ipsum dolor sit amet, labore laboramus ut nam, eum et debet populo efficiantur. No ius lorem assum epicurei, no per luptatum mandamus, usu ea vivendum disputando. Pri probo discere qualisque eu, ei summo senserit duo. Ad vim erat ludus facete. Vim te atqui vituperatoribus.</p>
+    <p>In 2018, two researchers conducted a study on... Lorem ipsum dolor sit amet, labore laboramus ut nam, eum et debet populo efficiantur. No ius lorem assum epicurei, no per luptatum mandamus, usu ea vivendum disputando. Pri probo discere qualisque eu, ei summo senserit duo. Ad vim erat ludus facete. Vim te atqui vituperatoribus.</p>
+  </h2>
+
+    <h2>
+      <div class = "centered">
+        <form>
+          <button id="submitButton" class="block" type = "button" onclick="newPerson()">Randomize</button>
+        </form>
+      </div>
+      <p class = "demographic" id = "selected_person"></p>
+    </h2>
+    
+<footer>
+  <b>Note: </b>
+  Note.
+  <br><br>
+  <b>Source: </b>
+  Source.
+  <br><br>
+  <b>Who made this? </b>
+  Me, Connor Rothschild! Learn more about me <a target="_blank" href = "https://connorrothschild.github.io">here</a>.
+</footer>
+
+</body>
+
+<script>
+
+var selected_person;
+
+// load the data
+d3.csv(
+	'./data/BROWARD_CLEAN.csv',
+	function(d) {
+		d.age = +d.age;
+		return d;
+	},
+	function(error, datafile) {
+		if (error) throw error;
+
+		// put the original data in csv
+		data = datafile;
+		console.log(data);
+
+		// create a random person function
+		randomize = function(data) {
+			var randomPerson = data[Math.floor(Math.random() * data.length)];
+			return randomPerson;
+		};
+
+		newPerson = function() {
+			// select a random person
+			selected_person = randomize(data);
+			console.log(selected_person);
+
+			d3.select('#selected_person').html(function(d, i) {
+				return 'Age: ' + selected_person.age;
+			});
+		};
+	}
+);
+
+  </script>

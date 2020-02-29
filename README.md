@@ -1,4 +1,4 @@
-# Are You Smarter Than a Criminal Justice Algorithm
+# Are You Smarter Than a Criminal Justice Algorithm?
 
 To do:
 
