@@ -22,7 +22,7 @@
 
     <h1>
       <!-- <img src = "images/header.png" width = 600> -->
-      <span style = "font-weight:600">Are You Smarter Than COMPAS?</span>
+      <span style = "font-weight:600">Are You Smarter Than <span class = "black-red-text">COMPAS?</span></span>
       <br><span style="font-size:80%">Probably.</span>
       <br><span style="font-size:45%">By <a target = "_blank" href = "https://connorrothschild.github.io">Connor Rothschild</a></span>
       <hr>
@@ -40,19 +40,17 @@
         </form>
 
         <div class = "big-box" id = "big-box">
-        <span class = "figure-container" id = "offense" style = "font-size:22px;"></span>
+        <span class = "figure-container" id = "offense" style = "font-size:22px;line-height:1.5em"></span>
         <div class="figure-container" >
             <figure class="center number number--large" id = "age">
             </figure>
             <figure class="center text" id = "sex">
             </figure>
-            <figure class="center number number--large" id = "priors">
-            </figure>
           </div>
           <div class="figure-container" >
-            <figure class="center number number--large" id = "juvenileFelonyCount">
-            </figure>
-            <figure class="center number number--large" id = "juvenileMisdemeanorCount">
+              <figure class="center number number--large" id = "priors">
+              </figure>
+            <figure class="center number number--large" id = "juvenileCount">
             </figure>
           </div>
         </div>
@@ -103,38 +101,34 @@ d3.csv(
       // change box opacity
       document.getElementById('big-box').setAttribute("class", "big-box-visible");
 
+      // remove prior "confirmation" text
+      d3.select('#reveal')
+        .html(function(d,i) {   
+              return null
+        })
+
 			// select a random person
 			selected_person = randomize(data);
 			console.log(selected_person);
 
 			d3.select('#age').html(function(d, i) {
 				return '<div><p><strong>' + selected_person.age + '</strong></p></div>' +
-                  '<p>The age of the defendant.</p>'
+                  '<p>The age of the defendant</p>'
       });
 
       d3.select('#sex').html(function(d, i) {
 				return '<div><p><strong>' + selected_person.sex + '</strong></p></div>' +
-                  '<p>The sex of the defendant.</p>'
-      });
-
-      d3.select('#crime_classification').html(function(d, i) {
-				return '<div><p><strong>' + selected_person.charge_degree + '</strong></p></div>' +
-                  '<p>Crime classification.</p>'
+                  '<p>The sex of the defendant</p>'
       });
 
       d3.select('#priors').html(function(d, i) {
 				return '<div><p><strong>' + selected_person.priors_count + '</strong></p></div>' +
-                  '<p>Prior crimes the defendant has been convicted of.</p>'
+                  '<p>Prior convictions</p>'
       });
 
-      d3.select('#juvenileFelonyCount').html(function(d, i) {
-				return '<div><p><strong>' + selected_person.juv_fel_count + '</strong></p></div>' +
-                  '<p>Juvenile felony charges.</p>'
-      });
-
-      d3.select('#juvenileMisdemeanorCount').html(function(d, i) {
-				return '<div><p><strong>' + selected_person.juv_misd_count + '</strong></p></div>' +
-                  '<p>Juvenile misdemeanor charges.</p>'
+      d3.select('#juvenileCount').html(function(d, i) {
+				return '<div><p><strong>' + selected_person.juv_total_count + '</strong></p></div>' +
+                  '<p>Juvenile charges</p>'
       });
       
       d3.select('#offense').html(function(d, i) {
@@ -166,7 +160,8 @@ d3.csv(
         console.log(output);
 
       d3.select('#reveal').html(function(d, i) {
-				return output;
+        return output 
+          + '<button id="submitButton" class="block" type = "button" onclick="newPerson()">Show me a New Defendant</button>';
       });
 
       }
@@ -188,7 +183,8 @@ d3.csv(
         console.log(output);
 
         d3.select('#reveal').html(function(d, i) {
-          return output;
+          return output 
+          + '<button id="submitButton" class="block" type = "button" onclick="newPerson()">Show me a New Defendant</button>';
         });
 
       }
