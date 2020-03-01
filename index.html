@@ -22,7 +22,7 @@
 
     <h1>
       <!-- <img src = "images/header.png" width = 600> -->
-      <span style = "font-weight:600">Are You Smarter Than <span class = "black-red-text">COMPAS?</span></span>
+      <span style = "font-weight:600">Are You Smarter Than <span class = "glitch" data-text = "COMPAS?">COMPAS?</span></span>
       <br><span style="font-size:80%">Probably.</span>
       <br><span style="font-size:45%">By <a target = "_blank" href = "https://connorrothschild.github.io">Connor Rothschild</a></span>
       <hr>
@@ -48,8 +48,8 @@
             </figure>
           </div>
           <div class="figure-container" >
-              <figure class="center number number--large" id = "priors">
-              </figure>
+            <figure class="center number number--large" id = "priors">
+            </figure>
             <figure class="center number number--large" id = "juvenileCount">
             </figure>
           </div>
@@ -57,7 +57,19 @@
 
       <p class = "demographic" id = "selected_person"></p>
       <p id = "reoffend" style = "font-size:24px"></p>
-      <p id = "reveal" style = "font-size:18px"></p>
+      <div class="figure-container" >
+          <figure class="center number number--large" id = "userInput">
+          </figure>
+          <figure class="center number number--large" id = "compasInput">
+          </figure>
+        </div>
+      <p id = "reveal"></p>
+      <div class="row">
+          <div class="column blue">Your accuracy: 
+            <br><span id = "yourAccuracy"></span></div>
+          <div class="column red">COMPAS accuracy: 
+            <br><span id = "compasAccuracy"></span></div>
+      </div>
     </h2>
     
 <footer>
@@ -77,6 +89,17 @@
 
 var selected_person;
 
+var total_guesses = 0;
+var compas_correct_score = 0;
+var user_correct_score = 0;
+var compas_correct_percentage;
+var user_correct_percentage;
+var user_input;
+var compas_input;
+var user_correct;
+var compas_correct;
+var onlyClickOnce;
+
 // load the data
 d3.csv(
 	'./data/final_data.csv',
@@ -95,9 +118,13 @@ d3.csv(
 		randomize = function(data) {
 			var randomPerson = data[Math.floor(Math.random() * data.length)];
 			return randomPerson;
-		};
+    };
 
 		newPerson = function() {
+
+      // every time that user refreshes for a new person, reset this counter (see more below)
+      onlyClickOnce = 0;
+
       // change box opacity
       document.getElementById('big-box').setAttribute("class", "big-box-visible");
 
@@ -107,10 +134,20 @@ d3.csv(
               return null
         })
 
+      d3.select('#userInput')
+        .html(function(d,i) {   
+              return null
+        })
+
+      d3.select('#compasInput')
+        .html(function(d,i) {   
+              return null
+      })
+
 			// select a random person
 			selected_person = randomize(data);
-			console.log(selected_person);
-
+      console.log(selected_person);
+    
 			d3.select('#age').html(function(d, i) {
 				return '<div><p><strong>' + selected_person.age + '</strong></p></div>' +
                   '<p>The age of the defendant</p>'
@@ -138,58 +175,241 @@ d3.csv(
       });
       
       d3.select('#reoffend').html(function(d, i) {
-        return 'Is this person likely to reoffend?' +
+        return 'Is this person likely to reoffend? ' +
          '<button id="yesButton" class="inline block themedGreen" type = "button" onclick="yesFunction()">Yes!</button>' +
          '<button id="noButton" class="inline block themedRed" type = "button" onclick="noFunction()">No!</button>'
       });
 
       yesFunction = function(d) {
 
-        var output; 
+        // increment only click once
+        onlyClickOnce++;
+
+        // if the user has clicked on a yes or no button more than once, ignore their input
+        if (onlyClickOnce > 1) {
+          null
+        } else {
+
+        total_guesses++;
 
         if (selected_person.compas_guess == "1" && selected_person.compas_correct == "1") {
-          output = "COMPAS guessed this person was likely to reoffend. It was right. You guessed this person was likely to reoffend. You were also right!"
+         
+            user_input = "Yes";
+            compas_input = "Yes";
+            user_correct = "Yes";
+            compas_correct = "Yes";
+            // increment both correct scores
+            compas_correct_score++;
+            user_correct_score++;
+            
         } else if (selected_person.compas_guess == "0" && selected_person.compas_correct == "0") {
-          output = "COMPAS guessed this person was not likely to reoffend. It was wrong. You guessed this person was likely to reoffend. You were right!"
+          
+            user_input = "Yes";
+            compas_input = "No";
+            user_correct = "Yes";
+            compas_correct = "No";
+
+            // increment user correct score
+            user_correct_score++;
+
         } else if (selected_person.compas_guess == "0" && selected_person.compas_correct == "1") {
-          output = "COMPAS guessed this person was not likely to reoffend. It was right. You guessed this person was likely to reoffend. You were wrong!"
+          
+            user_input = "Yes";
+            compas_input = "No";
+            user_correct = "No";
+            compas_correct = "Yes";
+
+            // increment compas correct score
+            compas_correct_score++;
+            
         } else if (selected_person.compas_guess == "1" && selected_person.compas_correct == "0") {
-          output = "COMPAS guessed this person was likely to reoffend. It was wrong. You guessed this person was likely to reoffend. You were also wrong!"
+           
+            user_input = "Yes";
+            compas_input = "Yes";
+            user_correct = "No";
+            compas_correct = "No";
+
         }
 
-        console.log(output);
+        user_correct_percentage = (user_correct_score/total_guesses)*100;
+        compas_correct_percentage = (compas_correct_score/total_guesses)*100;
 
-      d3.select('#reveal').html(function(d, i) {
-        return output 
-          + '<button id="submitButton" class="block" type = "button" onclick="newPerson()">Show me a New Defendant</button>';
+        console.log("User has " + user_correct_score + " correct guesses.")
+        console.log("COMPAS has " + compas_correct_score + " correct guesses.")
+        console.log("Total guesses: " + total_guesses)
+        console.log("User accuracy: " + user_correct_percentage)
+        console.log("COMPAS accuracy: " + compas_correct_percentage)
+
+      d3.select('#yourAccuracy').html(function(d, i) {
+        if (user_correct_percentage > compas_correct_percentage) {
+          return Math.round(user_correct_percentage) + "% (" + user_correct_score + " out of " + total_guesses + ") 😄"
+        } else {
+          return Math.round(user_correct_percentage) + "% (" + user_correct_score + " out of " + total_guesses + ") "
+        }
+      });
+
+      d3.select('#compasAccuracy').html(function(d, i) {
+        
+         if (compas_correct_percentage >= user_correct_percentage) {
+          return Math.round(compas_correct_percentage) + "% (" + compas_correct_score + " out of " + total_guesses + ") 😡"
+        } else {
+          return Math.round(compas_correct_percentage) + "% (" + compas_correct_score + " out of " + total_guesses + ")"
+        }
+      });
+
+      d3.select('#userInput').html(function(d, i) {
+        if (user_correct == "Yes") {
+        return "<p>Your guess: </p>" + 
+          '<div><p><strong>' + user_input + ' ✅ </strong></p></div>'
+        } else {
+          return "<p>Your guess: </p>" + 
+          '<div><p><strong>' + user_input + ' ❌ </strong></p></div>'
+        }
+      });
+
+      d3.select('#compasInput').html(function(d, i) {
+        if (compas_correct == "Yes") {
+        return "<p>COMPAS's guess: </p>" + 
+          '<div><p><strong>' + compas_input + ' ✅ </strong></p></div>'
+        } else {
+          return "<p>COMPAS's guess: </p>" + 
+          '<div><p><strong>' + compas_input + ' ❌ </strong></p></div>'
+        }
+      });
+
+      d3.select("#reveal").html(function(d, i) {
+        if (user_correct == "Yes" && compas_correct == "Yes") {
+          return "You were <strong>both right</strong>! "
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } else if (user_correct == "Yes" && compas_correct == "No") {
+          return "You were <strong>right</strong> and COMPAS was <strong>wrong</strong>! "
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } else if (user_correct == "No" && compas_correct == "Yes") {
+          return "You were <strong>wrong</strong> and COMPAS was <strong>right</strong>! "
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } else if (user_correct == "No" && compas_correct == "No") {
+          return "You were <strong>both wrong</strong>! "
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } 
       });
 
       }
+    }
+    };
 
       noFunction = function(d) {
 
-        var output; 
+        // increment only click once
+        onlyClickOnce++;
+
+        // if the user has clicked on a yes or no button more than once, ignore their input
+        if (onlyClickOnce > 1) {
+          null
+        } else {
+
+        total_guesses++;
 
         if (selected_person.compas_guess == "1" && selected_person.compas_correct == "1") {
-          output = "COMPAS guessed this person was likely to reoffend. It was right. You guessed this person was not likely to reoffend. You were wrong!"
+          
+            user_input = "No";
+            compas_input = "Yes";
+            user_correct = "No";
+            compas_correct = "Yes";
+            // increment compas correct score
+            compas_correct_score++;
+
         } else if (selected_person.compas_guess == "0" && selected_person.compas_correct == "0") {
-          output = "COMPAS guessed this person was not likely to reoffend. It was wrong. You guessed this person was not likely to reoffend. You were also wrong!"
+          
+            user_input = "No";
+            compas_input = "No";
+            user_correct = "No";
+            compas_correct = "No";
+
         } else if (selected_person.compas_guess == "0" && selected_person.compas_correct == "1") {
-          output = "COMPAS guessed this person was not likely to reoffend. It was right. You guessed this person was not likely to reoffend. You were also right!"
+          
+            user_input = "No";
+            compas_input = "No";
+            user_correct = "Yes";
+            compas_correct = "Yes";
+
+            //increment both scores
+            compas_correct_score++;
+            user_correct_score++;
+
         } else if (selected_person.compas_guess == "1" && selected_person.compas_correct == "0") {
-          output = "COMPAS guessed this person was likely to reoffend. It was wrong. You guessed this person was not likely to reoffend. You were right!"
+            user_input = "No";
+            compas_input = "Yes";
+            user_correct = "Yes";
+            compas_correct = "No";
+            
+            // increment user correct score
+            user_correct_score++;
         }
 
-        console.log(output);
+        user_correct_percentage = (user_correct_score/total_guesses)*100;
+        compas_correct_percentage = (compas_correct_score/total_guesses)*100;
 
-        d3.select('#reveal').html(function(d, i) {
-          return output 
-          + '<button id="submitButton" class="block" type = "button" onclick="newPerson()">Show me a New Defendant</button>';
-        });
+        console.log("User has " + user_correct_score + " correct guesses.")
+        console.log("COMPAS has " + compas_correct_score + " correct guesses.")
+        console.log("Total guesses: " + total_guesses)
+        console.log("User accuracy: " + user_correct_percentage)
+        console.log("COMPAS accuracy: " + compas_correct_percentage)
 
+        d3.select('#yourAccuracy').html(function(d, i) {
+        if (user_correct_percentage > compas_correct_percentage) {
+          return Math.round(user_correct_percentage) + "% (" + user_correct_score + " out of " + total_guesses + ") 😄"
+        } else {
+          return Math.round(user_correct_percentage) + "% (" + user_correct_score + " out of " + total_guesses + ") "
+        }
+      });
+
+        d3.select('#compasAccuracy').html(function(d, i) {
+        
+         if (compas_correct_percentage >= user_correct_percentage) {
+          return Math.round(compas_correct_percentage) + "% (" + compas_correct_score + " out of " + total_guesses + ") 😡"
+        } else {
+          return Math.round(compas_correct_percentage) + "% (" + compas_correct_score + " out of " + total_guesses + ")"
+        }
+      });
+
+      d3.select('#userInput').html(function(d, i) {
+        if (user_correct == "Yes") {
+        return "<p>Your guess: </p>" + 
+          '<div><p><strong>' + user_input + ' ✅ </strong></p></div>'
+        } else {
+          return "<p>Your guess: </p>" + 
+          '<div><p><strong>' + user_input + ' ❌ </strong></p></div>'
+        }
+      });
+
+      d3.select('#compasInput').html(function(d, i) {
+        if (compas_correct == "Yes") {
+        return "<p>COMPAS's guess: </p>" + 
+          '<div><p><strong>' + compas_input + ' ✅ </strong></p></div>'
+        } else {
+          return "<p>COMPAS's guess: </p>" + 
+          '<div><p><strong>' + compas_input + ' ❌ </strong></p></div>'
+        }
+      });
+
+      d3.select("#reveal").html(function(d, i) {
+        if (user_correct == "Yes" && compas_correct == "Yes") {
+          return "You were <strong>both right</strong>! "
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } else if (user_correct == "Yes" && compas_correct == "No") {
+          return "You were <strong>right</strong> and COMPAS was <strong>wrong</strong>! "
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } else if (user_correct == "No" && compas_correct == "Yes") {
+          return "You were <strong>wrong</strong> and COMPAS was <strong>right</strong>! "
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } else if (user_correct == "No" && compas_correct == "No") {
+          return "You were <strong>both wrong</strong>! " 
+          + '<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+        } 
+      });
+
+      };
       }
-      
-		};
 	}
 );
 
