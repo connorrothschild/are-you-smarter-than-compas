@@ -52,6 +52,35 @@ a {
 	color: #0000ee;
 }
 
+.big-box {
+	opacity: 0;
+}
+
+.big-box-visible {
+	background-color: #e2e8f4;
+	opacity: 1;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.figure-container {
+	display: flex;
+	justify-content: space-around;
+}
+.figure-container .number strong {
+	font-weight: bold;
+	font-size: 2rem !important;
+}
+.figure-container .number {
+	max-width: 17em;
+}
+.figure-container .text strong {
+	font-size: 1.5rem;
+}
+.figure-container figure p {
+	text-align: center !important;
+}
+
 .demographic {
 	text-align: center;
 }
