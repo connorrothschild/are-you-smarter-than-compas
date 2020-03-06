@@ -302,7 +302,7 @@ d3.csv(
 							user_correct_score +
 							' out of ' +
 							total_guesses +
-							') 😄'
+							') ✅'
 						);
 					} else {
 						return (
@@ -324,7 +324,7 @@ d3.csv(
 							compas_correct_score +
 							' out of ' +
 							total_guesses +
-							') 😡'
+							') ✅'
 						);
 					} else {
 						return (
