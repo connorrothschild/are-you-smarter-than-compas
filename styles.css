@@ -82,6 +82,13 @@ a {
 	text-align: center !important;
 }
 
+@media only screen and (max-width: 600px) {
+	.figure-container {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
 /* thanks https://github.com/SawyerClick/punk/blob/2ddd942e177e88f383821494e36823c30b7fa2c9/src/styles/main.css ! */
 .glitch {
 	color: black;
@@ -263,12 +270,10 @@ a {
 }
 
 .column {
-	float: left;
-	width: 45%;
 	border-style: solid;
 	border-width: 1px;
-	padding: 5px;
-	margin: 5px;
+	padding: 8px;
+	/* margin: 5px; */
 }
 
 .red {
