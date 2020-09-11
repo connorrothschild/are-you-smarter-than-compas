@@ -1,4 +1,4 @@
-@import url('https://rsms.me/inter/inter.css');
+/* @import url('https://rsms.me/inter/inter.css');
 html {
 	font-family: 'Inter', sans-serif;
 }
@@ -6,87 +6,18 @@ html {
 	html {
 		font-family: 'Inter var', sans-serif;
 	}
+} */
+
+a:hover {
+	color: red !important;
 }
 
-.black-red-text {
-	background-image: repeating-linear-gradient(45deg, black, red);
-	-webkit-background-clip: text;
-	background-size: 800% 800%;
-	-webkit-text-fill-color: transparent;
-	animation: black-red 3s ease infinite;
+#hidden-box {
+	display: none;
 }
 
-@keyframes black-red {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 25%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
-h1 {
-	font: 400 2em "Inter";
-	text-align: center;
-	margin-left: 2%;
-	padding-top: 1%;
-	max-width: 650px;
-	vertical-align: baseline;
-	margin: auto;
-}
-
-h2 {
-	font: 200 1em "Inter";
-	text-align: left;
-	margin-right: 2%;
-	margin-left: 2%;
-	line-height: 1.5em;
-	max-width: 650px;
-	margin: auto;
-}
-
-a {
-	color: #0000ee;
-}
-
-.big-box {
-	opacity: 0;
-}
-
-.big-box-visible {
-	background-color: #e2e8f4;
-	opacity: 1;
-	border-style: solid;
-	border-width: 1px;
-	padding: 10px;
-}
-
-.figure-container {
-	display: flex;
-	justify-content: space-around;
-}
-.figure-container .number strong {
-	font-weight: bold;
-	font-size: 2rem !important;
-}
-.figure-container .number {
-	max-width: 17em;
-}
-.figure-container .text strong {
-	font-size: 1.5rem;
-}
-.figure-container figure p {
-	text-align: center !important;
-}
-
-@media only screen and (max-width: 600px) {
-	.figure-container {
-		display: flex;
-		flex-direction: column;
-	}
+#not-hidden {
+	display: block;
 }
 
 /* thanks https://github.com/SawyerClick/punk/blob/2ddd942e177e88f383821494e36823c30b7fa2c9/src/styles/main.css ! */
@@ -171,7 +102,7 @@ a {
 	text-shadow: -1px 0 red;
 	top: 0;
 	color: black;
-	background: white;
+	background: #363636;
 	overflow: hidden;
 	animation: noise-anim 2s infinite linear alternate-reverse;
 }
@@ -249,82 +180,7 @@ a {
 	text-shadow: 1px 0 blue;
 	top: 0;
 	color: black;
-	background: white;
+	background: #363636;
 	overflow: hidden;
 	animation: noise-anim-2 15s infinite linear alternate-reverse;
-}
-
-.demographic {
-	text-align: center;
-}
-
-.centered {
-	margin: auto;
-}
-.themedRed {
-	--block-background-color: #ff6961;
-}
-
-.themedGreen {
-	--block-background-color: #90ee90;
-}
-
-.column {
-	border-style: solid;
-	border-width: 1px;
-	padding: 8px;
-	/* margin: 5px; */
-}
-
-.red {
-	background-color: #ffa18f;
-}
-
-.blue {
-	background-color: #e2e8f4;
-}
-/* Clear floats after the columns */
-.row:after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-.dropdown {
-	text-align-last: right;
-	font-size: 1em;
-	color: black;
-	border: none;
-	border-bottom: 1.5px solid grey;
-	background-color: white;
-}
-
-footer {
-	font: 200 .9em "Inter";
-	text-align: left;
-	margin-top: 2em;
-	border-style: solid;
-	border-width: 1px 0px 0px 0px;
-	padding: 8px 0px 0px 6px;
-	max-width: 650px;
-	margin: auto;
-}
-
-.boxed {
-	border: 1px solid black;
-	margin-left: 2%;
-	margin-right: 2%;
-	padding-top: 2.5%;
-	padding-bottom: 2.5%;
-	opacity: 0;
-}
-
-.boxedVisible {
-	border: 1px solid black;
-	background-color: #f2f1ec;
-	margin-left: 2%;
-	margin-right: 2%;
-	padding-top: 1.5%;
-	padding-bottom: 1.5%;
-	opacity: 1;
 }

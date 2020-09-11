@@ -35,8 +35,8 @@ d3.csv(
 			// every time that user refreshes for a new person, reset this counter (see more below)
 			onlyClickOnce = 0;
 
-			// change box opacity
-			document.getElementById('big-box').setAttribute('class', 'big-box-visible');
+			// change box display
+			document.getElementById('hidden-box').style.display = 'block';
 
 			// remove prior "confirmation" text
 			d3.select('#reveal').html(function(d, i) {
@@ -87,9 +87,9 @@ d3.csv(
 
 			d3.select('#offense').html(function(d, i) {
 				return (
-					'<div><p>Charge: <strong>' +
+					'<div><p>Charge: ' +
 					selected_person.charge_text +
-					'</strong> (' +
+					' (' +
 					selected_person.charge_degree +
 					')</p></div>'
 				);
@@ -97,9 +97,9 @@ d3.csv(
 
 			d3.select('#reoffend').html(function(d, i) {
 				return (
-					'Is this person likely to reoffend? ' +
-					'<button id="yesButton" class="inline block themedGreen" type = "button" onclick="yesFunction()">Yes!</button>' +
-					'<button id="noButton" class="inline block themedRed" type = "button" onclick="noFunction()">No!</button>'
+					'Is this person likely to reoffend?<br> ' +
+					'<button id="yesButton" class="button is-success mr-2 mt-3" type = "button" onclick="yesFunction()">Yes!</button>' +
+					'<button id="noButton" class="button is-danger ml-2 mt-3" type = "button" onclick="noFunction()">No!</button>'
 				);
 			});
 
@@ -220,23 +220,23 @@ d3.csv(
 					d3.select('#reveal').html(function(d, i) {
 						if (user_correct == 'Yes' && compas_correct == 'Yes') {
 							return (
-								'You were <strong>both right</strong>. ' +
-								'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+								'You were <strong>both right</strong>.<br>' +
+								'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 							);
 						} else if (user_correct == 'Yes' && compas_correct == 'No') {
 							return (
-								'You were <strong>right</strong> and COMPAS was <strong>wrong</strong>. ' +
-								'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+								'You were <strong>right</strong> and COMPAS was <strong>wrong</strong>.<br>' +
+								'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 							);
 						} else if (user_correct == 'No' && compas_correct == 'Yes') {
 							return (
-								'You were <strong>wrong</strong> and COMPAS was <strong>right</strong>. ' +
-								'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+								'You were <strong>wrong</strong> and COMPAS was <strong>right</strong>.<br>' +
+								'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 							);
 						} else if (user_correct == 'No' && compas_correct == 'No') {
 							return (
-								'You were <strong>both wrong</strong>. ' +
-								'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+								'You were <strong>both wrong</strong>.<br>' +
+								'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 							);
 						}
 					});
@@ -357,23 +357,23 @@ d3.csv(
 				d3.select('#reveal').html(function(d, i) {
 					if (user_correct == 'Yes' && compas_correct == 'Yes') {
 						return (
-							'You were <strong>both right</strong>. ' +
-							'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+							'You were <strong>both right</strong>.<br>' +
+							'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 						);
 					} else if (user_correct == 'Yes' && compas_correct == 'No') {
 						return (
-							'You were <strong>right</strong> and COMPAS was <strong>wrong</strong>. ' +
-							'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+							'You were <strong>right</strong> and COMPAS was <strong>wrong</strong>.<br>' +
+							'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 						);
 					} else if (user_correct == 'No' && compas_correct == 'Yes') {
 						return (
-							'You were <strong>wrong</strong> and COMPAS was <strong>right</strong>. ' +
-							'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+							'You were <strong>wrong</strong> and COMPAS was <strong>right</strong>.<br>' +
+							'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 						);
 					} else if (user_correct == 'No' && compas_correct == 'No') {
 						return (
-							'You were <strong>both wrong</strong>. ' +
-							'<button id="submitButton" class="block inline" type = "button" onclick="newPerson()">Show me a New Defendant</button>'
+							'You were <strong>both wrong</strong>.<br> ' +
+							'<button id="submitButton" class="button mt-3" type = "button" onclick="newPerson()">Show Me a New Defendant</button>'
 						);
 					}
 				});
